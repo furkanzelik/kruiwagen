@@ -10,14 +10,17 @@ const cards = [
   { title: "Autodesk", url: "https://signin.autodesk.com/?flowId=dCdEtBU4a2" },
 ];
 
+// Render grid
 const grid = document.getElementById("grid");
 
+// Create one card
 const createCard = ({ title, url }, idx) => {
   const a = document.createElement("a");
   a.className = "card";
-  a.href = `viewer.html?url=${encodeURIComponent(url)}`;
+  a.href = url;
+  a.rel = "noopener noreferrer";
+  a.setAttribute("aria-label", `${title} – ga naar ${new URL(url).hostname}`);
   a.dataset.index = String(idx);
-  a.setAttribute("aria-label", `${title} – open in viewer`);
 
   const h2 = document.createElement("h2");
   h2.className = "card__title";
@@ -27,10 +30,11 @@ const createCard = ({ title, url }, idx) => {
   return a;
 };
 
+// Render all cards
 grid.innerHTML = "";
 cards.forEach((c, i) => grid.appendChild(createCard(c, i)));
 
-// Keyboard: Enter to open in viewer
+// Keyboard: Enter to open same tab
 grid.addEventListener("keydown", (e) => {
   const anchor = e.target.closest("a.card");
   if (!anchor) return;
